@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -8,6 +9,7 @@ using Para.Api.Middleware;
 using Para.Api.Service;
 using Para.Bussiness;
 using Para.Bussiness.Cqrs;
+using Para.Bussiness.Validations;
 using Para.Data.Context;
 using Para.Data.UnitOfWork;
 
@@ -25,7 +27,16 @@ public class Startup
     
     public void ConfigureServices(IServiceCollection services)
     {
-               
+
+        services.AddControllers()
+        .AddFluentValidation(fv =>
+        {
+            fv.RegisterValidatorsFromAssemblyContaining<CustomerValidator>();
+            fv.RegisterValidatorsFromAssemblyContaining<CustomerAddressValidator>();
+            fv.RegisterValidatorsFromAssemblyContaining<CustomerDetailValidator>();
+            fv.RegisterValidatorsFromAssemblyContaining<CustomerPhoneValidator>();
+        });
+
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
