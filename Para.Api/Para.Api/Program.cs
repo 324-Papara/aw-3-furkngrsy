@@ -1,4 +1,7 @@
-namespace Para.Api;
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
+using Para.Api;
+using Para.Bussiness.DependencyResolvers;
 
 public class Program
 {
@@ -12,5 +15,10 @@ public class Program
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
+            })
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            .ConfigureContainer<ContainerBuilder>(builder =>
+            {
+                builder.RegisterModule(new AutofacBusinessModule());
             });
 }

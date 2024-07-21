@@ -10,8 +10,12 @@ using Para.Api.Service;
 using Para.Bussiness;
 using Para.Bussiness.Cqrs;
 using Para.Bussiness.Validations;
+using Para.Bussiness.DependencyResolvers;
 using Para.Data.Context;
 using Para.Data.UnitOfWork;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using FluentValidation;
 
 namespace Para.Api;
 
@@ -48,25 +52,19 @@ public class Startup
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Para.Api", Version = "v1" });
         });
 
-        var connectionStringSql = Configuration.GetConnectionString("MsSqlConnection");
-        services.AddDbContext<ParaDbContext>(options => options.UseSqlServer(connectionStringSql));
-        //services.AddDbContext<ParaDbContext>(options => options.UseNpgsql(connectionStringPostgre));
-  
-
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile(new MapperConfig());
         });
         services.AddSingleton(config.CreateMapper());
 
+    }
 
-        services.AddMediatR(typeof(CreateCustomerCommand).GetTypeInfo().Assembly);
-
-        services.AddTransient<CustomService1>();
-        services.AddScoped<CustomService2>();
-        services.AddSingleton<CustomService3>();
+    public void ConfigureContainer(ContainerBuilder builder)
+    {
+        // Autofac ile yapýlandýrmalarý buraya taþýyoruz.
+        // AutofacBusinessModule sýnýfý, tüm baðýmlýlýklarý burada yapýlandýracaktýr.
+        builder.RegisterModule(new AutofacBusinessModule());
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
