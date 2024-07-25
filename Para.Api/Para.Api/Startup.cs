@@ -8,6 +8,10 @@ using Para.Bussiness;
 using Para.Bussiness.Validations;
 using Para.Bussiness.DependencyResolvers;
 using Autofac;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Para.Data.Context;
+using System.Data;
 
 namespace Para.Api;
 
@@ -44,6 +48,7 @@ public class Startup
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Para.Api", Version = "v1" });
         });
 
+
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile(new MapperConfig());
@@ -54,8 +59,6 @@ public class Startup
 
     public void ConfigureContainer(ContainerBuilder builder)
     {
-        // Autofac ile yapýlandýrmalarý buraya taþýyoruz.
-        // AutofacBusinessModule sýnýfý, tüm baðýmlýlýklarý burada yapýlandýracaktýr.
         builder.RegisterModule(new AutofacBusinessModule());
     }
 

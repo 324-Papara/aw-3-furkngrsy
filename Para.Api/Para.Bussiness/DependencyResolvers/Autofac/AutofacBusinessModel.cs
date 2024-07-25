@@ -6,6 +6,8 @@ using Para.Bussiness.Cqrs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Para.Data.Context;
+using Para.Data.DapperRepository;
+
 
 namespace Para.Bussiness.DependencyResolvers
 {
@@ -15,6 +17,9 @@ namespace Para.Bussiness.DependencyResolvers
         {
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+
+            builder.RegisterType<CustomerRepository>().SingleInstance();
+
 
             builder.RegisterAssemblyTypes(typeof(CreateCustomerCommand).Assembly)
                .AsImplementedInterfaces();
