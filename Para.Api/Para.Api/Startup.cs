@@ -1,21 +1,13 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Para.Api.Middleware;
 using Para.Api.Service;
 using Para.Bussiness;
-using Para.Bussiness.Cqrs;
 using Para.Bussiness.Validations;
 using Para.Bussiness.DependencyResolvers;
-using Para.Data.Context;
-using Para.Data.UnitOfWork;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using FluentValidation;
 
 namespace Para.Api;
 
